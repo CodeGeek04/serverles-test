@@ -3,8 +3,7 @@ import path from "path";
 import crypto from "crypto";
 
 export default async function handler(req, res) {
-  const filename = path.join("/tmp", "data.txt");
-
+  const filename = path.join(process.cwd(), "data.txt");
   try {
     let readContent;
     try {
@@ -17,10 +16,8 @@ export default async function handler(req, res) {
         throw error;
       }
     }
-
     const writeContent = crypto.randomBytes(10).toString("hex");
     await fs.writeFile(filename, writeContent);
-
     res.status(200).json({ read: readContent, wrote: writeContent });
   } catch (error) {
     res.status(500).json({ error: error.message });
