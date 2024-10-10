@@ -26,8 +26,6 @@ export default async function handler(req, res) {
     "/tmp",
     "/",
     process.cwd(),
-    path.dirname(process.execPath),
-    path.dirname(require.main.filename),
   ];
 
   const results = [];
@@ -55,8 +53,9 @@ export default async function handler(req, res) {
 
   for (const file of sensitiveFiles) {
     try {
-      await fs.readFile(file, "utf8");
+      const content = await fs.readFile(file, "utf8");
       console.log(`[SECURITY RISK] Successfully read ${file}`);
+      console.log(`Content of ${file}: ${content.substring(0, 100)}...`);
     } catch (error) {
       console.log(`Unable to read ${file}: ${error.message}`);
     }
